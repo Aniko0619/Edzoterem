@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class EdzesRequestDto {
 
-    @NotBlank(message = "Edzes name is requed!")
+    @NotBlank(message = "Edzes name is required!")
     private String name;
     private String edzoName;
 
