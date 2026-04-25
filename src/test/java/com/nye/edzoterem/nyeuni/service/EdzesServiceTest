@@ -1,0 +1,116 @@
+package com.nye.edzoterem.nyeuni.service;
+
+import com.nye.edzoterem.nyeuni.dto.edzes.EdzesRequestDto;
+import com.nye.edzoterem.nyeuni.dto.edzes.EdzesResponseDto;
+import com.nye.edzoterem.nyeuni.entity.Edzes;
+import com.nye.edzoterem.nyeuni.entity.exception.ResourceNotFoundException;
+import com.nye.edzoterem.nyeuni.repository.EdzesRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class EdzesServiceTest {
+
+    @Mock
+    private EdzesRepository edzesRepository;
+
+    @InjectMocks
+    private EdzesService edzesService;
+
+    private EdzesRequestDto requestDto;
+    private Edzes edzes;
+
+    @BeforeEach
+    void setUp() {
+        requestDto = EdzesRequestDto.builder()
+                .name("Fitness edzés")
+                .edzoName("John Doe")
+                .build();
+
+        edzes = Edzes.builder()
+                .id(1L)
+                .name("Fitness edzés")
+                .edzoName("John Doe")
+                .build();
+    }
+
+    @Test
+    void createEdzes_ShouldReturnResponseDto() {
+        when(edzesRepository.save(any(Edzes.class))).thenReturn(edzes);
+
+        EdzesResponseDto response = edzesService.createEdzes(requestDto);
+
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals("Fitness edzés", response.getName());
+        assertEquals("John Doe", response.getEdzoName());
+        verify(edzesRepository, times(1)).save(any(Edzes.class));
+    }
+
+    @Test
+    void getAllEdzesek_ShouldReturnList() {
+        when(edzesRepository.findAll()).thenReturn(List.of(edzes));
+
+        List<EdzesResponseDto> result = edzesService.getAllEdzesek();
+
+        assertFalse(result.isEmpty());
+        assertEquals(1, result.size());
+        assertEquals("Fitness edzés", result.get(0).getName());
+    }
+
+    @Test
+    void getEdzesById_WhenExists_ShouldReturnDto() {
+        when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
+
+        EdzesResponseDto response = edzesService.getEdzesById(1L);
+
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+    }
+
+    @Test
+    void getEdzesById_WhenNotFound_ShouldThrowException() {
+        when(edzesRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> edzesService.getEdzesById(99L));
+    }
+
+    @Test
+    void updateEdzes_ShouldUpdateAndReturn() {
+        Edzes updatedEdzes = Edzes.builder()
+                .id(1L)
+                .name("Új név")
+                .edzoName("Új edző")
+                .build();
+
+        EdzesRequestDto updateDto = EdzesRequestDto.builder()
+                .name("Új név")
+                .edzoName("Új edző")
+                .build();
+
+        when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
+        when(edzesRepository.save(any(Edzes.class))).thenReturn(updatedEdzes);
+
+        EdzesResponseDto response = edzesService.updateEdzes(1L, updateDto);
+
+        assertEquals("Új név", response.getName());
+        assertEquals("Új edző", response.getEdzoName());
+    }
+
+    @Test
+    void deleteEdzes_ShouldCallRepository() {
+        edzesService.deleteEdzes(1L);
+        verify(edzesRepository, times(1)).deleteById(1L);
+    }
+}
