@@ -1,4 +1,3 @@
-
 package com.nye.edzoterem.nyeuni.entity;
 
 import jakarta.persistence.Column;
@@ -15,15 +14,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
-@Table(name = "edzesek")                //  Adatbázis tábla neve
-@Data                                     // lombokból jön, getter, setter, ToString,
+@Table(name = "edzesek")      //  Adatbázis tábla neve
+@Data                          // lombokból jön, getter, setter, ToString,
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class Edzes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,6 +33,4 @@ public class Edzes {
 
     @OneToMany(mappedBy = "edzes")
     private List<Tag> tagok = new ArrayList<>();
-
-
 }

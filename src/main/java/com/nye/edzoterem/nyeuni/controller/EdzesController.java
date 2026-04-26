@@ -1,9 +1,10 @@
 package com.nye.edzoterem.nyeuni.controller;
 
+import java.util.List;
+
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesRequestDto;
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesResponseDto;
 import com.nye.edzoterem.nyeuni.service.EdzesService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
