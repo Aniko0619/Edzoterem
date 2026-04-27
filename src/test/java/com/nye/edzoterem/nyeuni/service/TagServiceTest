@@ -1,0 +1,143 @@
+package com.nye.edzoterem.nyeuni.service;
+
+import com.nye.edzoterem.nyeuni.dto.tag.TagRequestDto;
+import com.nye.edzoterem.nyeuni.dto.tag.TagResponseDto;
+import com.nye.edzoterem.nyeuni.entity.Edzes;
+import com.nye.edzoterem.nyeuni.entity.Tag;
+import com.nye.edzoterem.nyeuni.entity.exception.ResourceNotFoundException;
+import com.nye.edzoterem.nyeuni.repository.EdzesRepository;
+import com.nye.edzoterem.nyeuni.repository.TagRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class TagServiceTest {
+
+    @Mock
+    private TagRepository tagRepository;
+
+    @Mock
+    private EdzesRepository edzesRepository;
+
+    @InjectMocks
+    private TagService tagService;
+
+    private Tag tag;
+    private Edzes edzes;
+    private TagRequestDto requestDto;
+    private TagResponseDto responseDto;
+
+    @BeforeEach
+    void setUp() {
+        edzes = Edzes.builder()
+                .id(1L)
+                .name("Fitness edzés")
+                .build();
+
+        tag = Tag.builder()
+                .id(1L)
+                .name("Tag1")
+                .age(25)
+                .edzes(edzes)
+                .build();
+
+        requestDto = new TagRequestDto();
+        requestDto.setName("Tag1");
+        requestDto.setAge(25);
+        requestDto.setEdzesId(1L);
+
+        responseDto = TagResponseDto.builder()
+                .id(1L)
+                .name("Tag1")
+                .age(25)
+                .edzesId(1L)
+                .edzesName("Fitness edzés")
+                .build();
+    }
+
+    @Test
+    void createTag_ShouldReturnResponseDto_WhenSuccess() {
+        when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
+        when(tagRepository.save(any(Tag.class))).thenReturn(tag);
+
+        TagResponseDto result = tagService.createTag(requestDto);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getName()).isEqualTo("Tag1");
+        verify(edzesRepository, times(1)).findById(1L);
+        verify(tagRepository, times(1)).save(any(Tag.class));
+    }
+
+    @Test
+    void createTag_ShouldThrowException_WhenEdzesNotFound() {
+        when(edzesRepository.findById(99L)).thenReturn(Optional.empty());
+        requestDto.setEdzesId(99L);
+
+        assertThatThrownBy(() -> tagService.createTag(requestDto))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Edzes not found by id: 99");
+    }
+
+    @Test
+    void getAllTags_ShouldReturnListOfResponseDto() {
+        when(tagRepository.findAll()).thenReturn(List.of(tag));
+
+        List<TagResponseDto> result = tagService.getAllTags();
+
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void getTagById_ShouldReturnResponseDto_WhenTagExists() {
+        when(tagRepository.findById(1L)).thenReturn(Optional.of(tag));
+
+        TagResponseDto result = tagService.getTagById(1L);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void getTagById_ShouldThrowException_WhenTagNotFound() {
+        when(tagRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> tagService.getTagById(99L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Tag not found by id: 99");
+    }
+
+    @Test
+    void updateTag_ShouldReturnUpdatedResponseDto_WhenSuccess() {
+        when(tagRepository.findById(1L)).thenReturn(Optional.of(tag));
+        when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
+        when(tagRepository.save(any(Tag.class))).thenReturn(tag);
+
+        TagResponseDto result = tagService.updateTag(1L, requestDto);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void deleteTag_ShouldCallRepositoryDelete() {
+        doNothing().when(tagRepository).deleteById(1L);
+
+        tagService.deleteTag(1L);
+
+        verify(tagRepository, times(1)).deleteById(1L);
+    }
+}

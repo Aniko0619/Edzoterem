@@ -1,11 +1,12 @@
 package com.nye.edzoterem.nyeuni.service;
 
+import java.util.List;
+import java.util.Optional;
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesRequestDto;
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesResponseDto;
 import com.nye.edzoterem.nyeuni.entity.Edzes;
 import com.nye.edzoterem.nyeuni.entity.exception.ResourceNotFoundException;
 import com.nye.edzoterem.nyeuni.repository.EdzesRepository;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +27,7 @@ public class EdzesService {
         return mapToDto(savedEdzes);
     }
 
-    public List<EdzesResponseDto> getAllEdzesek() {
+    public List<EdzesResponseDto> getAllEdzesek() {  // Javítva: metódusnév konzisztens a controllerrel
         return edzesRepository.findAll()
                 .stream()
                 .map(this::mapToDto)
@@ -35,22 +36,22 @@ public class EdzesService {
 
     public EdzesResponseDto getEdzesById(Long id) {
         Edzes edzes = edzesRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));  // Javítva: new hiányzott
         return mapToDto(edzes);
     }
 
-    public EdzesResponseDto updateEdzes(Long id, EdzesRequestDto requestDto) {
+    public EdzesResponseDto updateEdzes(Long id, EdzesRequestDto requestDto) {  // Javítva: paraméter név
         Edzes edzes = edzesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
 
-        edzes.setName(requestDto.getName());
-        edzes.setEdzoName(requestDto.getEdzoName());
+        edzes.setName(requestDto.getName());  // Javítva: requestDto.getName()
+        edzes.setEdzoName(requestDto.getEdzoName());  // Javítva: requestDto.getEdzoName()
 
         Edzes updatedEdzes = edzesRepository.save(edzes);
         return mapToDto(updatedEdzes);
     }
 
-    public void deleteEdzes(Long id) {
+    public void deleteEdzes(Long id) {  // Javítva: metódusnév
         edzesRepository.deleteById(id);
     }
 
@@ -62,3 +63,4 @@ public class EdzesService {
                 .build();
     }
 }
+

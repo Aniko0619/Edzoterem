@@ -29,93 +29,130 @@ class EdzesServiceTest {
     @InjectMocks
     private EdzesService edzesService;
 
-    private EdzesRequestDto requestDto;
     private Edzes edzes;
+    private EdzesRequestDto requestDto;
+    private EdzesResponseDto responseDto;
 
     @BeforeEach
     void setUp() {
-        requestDto = EdzesRequestDto.builder()
-                .name("Kardió edzés")
-                .edzoName("Kiss Péter")
-                .build();
-
         edzes = Edzes.builder()
                 .id(1L)
-                .name("Kardió edzés")
-                .edzoName("Kiss Péter")
+                .name("Fitness edzés")
+                .edzoName("John Doe")
+                .build();
+
+        requestDto = EdzesRequestDto.builder()
+                .name("Fitness edzés")
+                .edzoName("John Doe")
+                .build();
+
+        responseDto = EdzesResponseDto.builder()
+                .id(1L)
+                .name("Fitness edzés")
+                .edzoName("John Doe")
                 .build();
     }
 
     @Test
-    void createEdzes_ShouldReturnEdzesResponseDto() {
+    void createEdzes_ShouldReturnResponseDto_WhenSuccess() {
         when(edzesRepository.save(any(Edzes.class))).thenReturn(edzes);
 
-        EdzesResponseDto response = edzesService.createEdzes(requestDto);
+        EdzesResponseDto result = edzesService.createEdzes(requestDto);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getId()).isEqualTo(1L);
-        assertThat(response.getName()).isEqualTo("Kardió edzés");
-        assertThat(response.getEdzoName()).isEqualTo("Kiss Péter");
-
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getName()).isEqualTo("Fitness edzés");
+        assertThat(result.getEdzoName()).isEqualTo("John Doe");
         verify(edzesRepository, times(1)).save(any(Edzes.class));
     }
 
     @Test
-    void getAllEdzesek_ShouldReturnList() {
-        List<Edzes> edzesList = List.of(edzes);
-        when(edzesRepository.findAll()).thenReturn(edzesList);
+    void getAllEdzesek_ShouldReturnListOfResponseDto_WhenSuccess() {
+        when(edzesRepository.findAll()).thenReturn(List.of(edzes));
 
-        List<EdzesResponseDto> response = edzesService.getAllEdzesek();
+        List<EdzesResponseDto> result = edzesService.getAllEdzesek();
 
-        assertThat(response).hasSize(1);
-        assertThat(response.get(0).getName()).isEqualTo("Kardió edzés");
-
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(1L);
+        assertThat(result.get(0).getName()).isEqualTo("Fitness edzés");
         verify(edzesRepository, times(1)).findAll();
     }
 
     @Test
-    void getEdzesById_WhenExists_ShouldReturn() {
+    void getAllEdzesek_ShouldReturnEmptyList_WhenNoEdzesExists() {
+        when(edzesRepository.findAll()).thenReturn(List.of());
+
+        List<EdzesResponseDto> result = edzesService.getAllEdzesek();
+
+        assertThat(result).isEmpty();
+        verify(edzesRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getEdzesById_ShouldReturnResponseDto_WhenEdzesExists() {
         when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
 
-        EdzesResponseDto response = edzesService.getEdzesById(1L);
+        EdzesResponseDto result = edzesService.getEdzesById(1L);
 
-        assertThat(response.getId()).isEqualTo(1L);
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getName()).isEqualTo("Fitness edzés");
         verify(edzesRepository, times(1)).findById(1L);
     }
 
     @Test
-    void getEdzesById_WhenNotFound_ShouldThrowException() {
+    void getEdzesById_ShouldThrowResourceNotFoundException_WhenEdzesNotExists() {
         when(edzesRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> edzesService.getEdzesById(99L))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("Edzes not found by id: 99");
+        verify(edzesRepository, times(1)).findById(99L);
     }
 
     @Test
-    void updateEdzes_WhenExists_ShouldUpdate() {
+    void updateEdzes_ShouldReturnUpdatedResponseDto_WhenEdzesExists() {
         EdzesRequestDto updateRequest = EdzesRequestDto.builder()
-                .name("Erősítő edzés")
-                .edzoName("Nagy Anna")
+                .name("Yoga edzés")
+                .edzoName("Jane Smith")
                 .build();
 
         Edzes updatedEdzes = Edzes.builder()
                 .id(1L)
-                .name("Erősítő edzés")
-                .edzoName("Nagy Anna")
+                .name("Yoga edzés")
+                .edzoName("Jane Smith")
                 .build();
 
         when(edzesRepository.findById(1L)).thenReturn(Optional.of(edzes));
         when(edzesRepository.save(any(Edzes.class))).thenReturn(updatedEdzes);
 
-        EdzesResponseDto response = edzesService.updateEdzes(1L, updateRequest);
+        EdzesResponseDto result = edzesService.updateEdzes(1L, updateRequest);
 
-        assertThat(response.getName()).isEqualTo("Erősítő edzés");
-        assertThat(response.getEdzoName()).isEqualTo("Nagy Anna");
+        assertThat(result).isNotNull();
+        assertThat(result.getName()).isEqualTo("Yoga edzés");
+        assertThat(result.getEdzoName()).isEqualTo("Jane Smith");
+        verify(edzesRepository, times(1)).findById(1L);
+        verify(edzesRepository, times(1)).save(any(Edzes.class));
     }
 
     @Test
-    void deleteEdzes_ShouldDelete() {
+    void updateEdzes_ShouldThrowResourceNotFoundException_WhenEdzesNotExists() {
+        EdzesRequestDto updateRequest = EdzesRequestDto.builder()
+                .name("Yoga edzés")
+                .edzoName("Jane Smith")
+                .build();
+
+        when(edzesRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> edzesService.updateEdzes(99L, updateRequest))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Edzes not found by id: 99");
+        verify(edzesRepository, times(1)).findById(99L);
+        verify(edzesRepository, never()).save(any(Edzes.class));
+    }
+
+    @Test
+    void deleteEdzes_ShouldCallRepositoryDelete_WhenEdzesExists() {
         doNothing().when(edzesRepository).deleteById(1L);
 
         edzesService.deleteEdzes(1L);

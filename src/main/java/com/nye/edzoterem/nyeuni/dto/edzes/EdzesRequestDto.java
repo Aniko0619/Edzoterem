@@ -14,3 +14,4 @@ public class EdzesRequestDto {
     private String edzoName;
 
 }
+

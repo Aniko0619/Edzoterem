@@ -14,3 +14,4 @@ public class TagResponseDto {
     private Long edzesId;
     private String edzesName;
 }
+

@@ -7,21 +7,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
-@Table(name = "edzesek")      //  Adatbázis tábla neve
-@Data                          // lombokból jön, getter, setter, ToString,
+@Table(name = "edzesek")                //  Adatbázis tábla neve
+@Data                                     // lombokból jön, getter, setter, ToString,
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Edzes {
 
+public class Edzes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,4 +33,6 @@ public class Edzes {
 
     @OneToMany(mappedBy = "edzes")
     private List<Tag> tagok = new ArrayList<>();
+
+
 }
