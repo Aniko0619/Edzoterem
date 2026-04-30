@@ -6,19 +6,11 @@ import com.nye.edzoterem.nyeuni.service.EdzesService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/edzesek")
-// Ezt az edzes controllert innentol kezdve a http://localhost:8080/api/edzesek
+//  http://localhost:8080/api/edzesek
 @RequiredArgsConstructor
 public class EdzesController {
 
@@ -26,16 +18,16 @@ public class EdzesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EdzesResponseDto createEdzesResponse(@RequestBody EdzesRequestDto requestDto) {        // RequestBody : innen jon a JSON
+    public EdzesResponseDto createEdzesResponse(@RequestBody EdzesRequestDto requestDto) {   // RequestBody : innen jon a JSON
         return  edzesService.createEdzes(requestDto);
     }
 
     @GetMapping
-    public List<EdzesResponseDto> getAllEdzesek() {
+    public List<EdzesResponseDto>getAllEdzesek() {
         return edzesService.getAllEdzesek();
     }
-
-    @GetMapping("/{id}")    //  http://localhost:8080/api/edzesek/120
+    @GetMapping("/{id}")
+//  http://localhost:8080/api/edzesek/120
     public EdzesResponseDto getEdzesById(@PathVariable Long id) {
         return edzesService.getEdzesById(id);
     }
@@ -53,23 +45,23 @@ public class EdzesController {
     }
 
     //TESZT   ---> http://localhost:8080/api/edzesek/hello
+
     @GetMapping("/hello")
     public String hello() {
         return "API is working!";
     }
+
 }
 
 
 /*  ELLENŐRZÉS:
 
 * http://localhost:8080/api/edzesek/hello --> API is working!
-* Tehát:
+
   - A Spring Boot alkalmazás elindult
   - A szerver fut a localhost:8080-on
   - A Controller elérhető
-*
+
 http://localhost:8080/api/edzesek ---> []
-Tehát:
-*
-* */
+ */
 

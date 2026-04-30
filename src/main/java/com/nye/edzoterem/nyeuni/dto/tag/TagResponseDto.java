@@ -1,3 +1,4 @@
+
 package com.nye.edzoterem.nyeuni.dto.tag;
 
 import lombok.Builder;
@@ -14,4 +15,3 @@ public class TagResponseDto {
     private Long edzesId;
     private String edzesName;
 }
-

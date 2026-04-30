@@ -1,3 +1,5 @@
+
+
 package com.nye.edzoterem.nyeuni.dto.edzes;
 
 import jakarta.persistence.Column;

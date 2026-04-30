@@ -1,0 +1,56 @@
+package com.nye.edzoterem.nyeuni.controller;
+
+import com.nye.edzoterem.nyeuni.dto.tag.TagRequestDto;
+import com.nye.edzoterem.nyeuni.dto.tag.TagResponseDto;
+import com.nye.edzoterem.nyeuni.service.TagService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/tagok")
+@RequiredArgsConstructor
+public class TagController {
+
+    private final TagService tagService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public TagResponseDto createTag(@Valid @RequestBody TagRequestDto requestDto) {
+        return tagService.createTag(requestDto);
+    }
+
+    @GetMapping
+    public List<TagResponseDto> getAllTags() {
+        return tagService.getAllTags();
+    }
+
+    @GetMapping("/{id}")
+    public TagResponseDto getTagById(@PathVariable Long id) {
+        return tagService.getTagById(id);
+    }
+
+    @GetMapping("/edzes/{edzesId}")
+    public List<TagResponseDto> getTagsByEdzesId(@PathVariable Long edzesId) {
+        return tagService.getTagsByEdzesId(edzesId);
+    }
+
+    @PutMapping("/{id}")
+    public TagResponseDto updateTag(@PathVariable Long id, @Valid @RequestBody TagRequestDto requestDto) {
+        return tagService.updateTag(id, requestDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTag(@PathVariable Long id) {
+        tagService.deleteTag(id);
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Tag API is working!";
+    }
+}

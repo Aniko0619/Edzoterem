@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 
-public interface EdzesRepository  extends JpaRepository<Edzes, Long> {
+public interface EdzesRepository  extends JpaRepository<Edzes, Long> {      // < entity-t adtunk meg, mert itt van
+
+
 
 }
 

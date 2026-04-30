@@ -27,7 +27,7 @@ public class EdzesService {
         return mapToDto(savedEdzes);
     }
 
-    public List<EdzesResponseDto> getAllEdzesek() {  // Javítva: metódusnév konzisztens a controllerrel
+    public List<EdzesResponseDto> getAllEdzesek() {        // Javítva: metódusnév konzisztens a controllerrel
         return edzesRepository.findAll()
                 .stream()
                 .map(this::mapToDto)
@@ -36,22 +36,22 @@ public class EdzesService {
 
     public EdzesResponseDto getEdzesById(Long id) {
         Edzes edzes = edzesRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));  // Javítva: new hiányzott
+                .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
         return mapToDto(edzes);
     }
 
-    public EdzesResponseDto updateEdzes(Long id, EdzesRequestDto requestDto) {  // Javítva: paraméter név
+    public EdzesResponseDto updateEdzes(Long id, EdzesRequestDto requestDto) {
         Edzes edzes = edzesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
 
-        edzes.setName(requestDto.getName());  // Javítva: requestDto.getName()
-        edzes.setEdzoName(requestDto.getEdzoName());  // Javítva: requestDto.getEdzoName()
+        edzes.setName(requestDto.getName());
+        edzes.setEdzoName(requestDto.getEdzoName());
 
         Edzes updatedEdzes = edzesRepository.save(edzes);
         return mapToDto(updatedEdzes);
     }
 
-    public void deleteEdzes(Long id) {  // Javítva: metódusnév
+    public void deleteEdzes(Long id) {
         edzesRepository.deleteById(id);
     }
 
