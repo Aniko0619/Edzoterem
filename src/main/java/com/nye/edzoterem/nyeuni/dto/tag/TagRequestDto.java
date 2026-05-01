@@ -11,9 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagRequestDto {
-
-    @NotBlank(message = "Tag name is required!")
-    private String name;
-    private Integer age;
-    private Long edzesId;
+    @NotBlank(message = "Tag neve required!")
+    private String tagNeve;      // volt: name
+    private Integer kor;          // volt: age
+    private Long edzesId;         // marad
 }

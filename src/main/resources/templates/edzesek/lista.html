@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edzések</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f0e8;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      color: #7b6e5d;
+      margin-bottom: 20px;
+    }
+    .btn-uj {
+      background: #c4b5a0;
+      color: white;
+      padding: 8px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      background: #d4c5b0;
+      padding: 10px;
+      text-align: left;
+    }
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    .btn-modositas {
+      background: #b5c4b1;
+      color: white;
+      padding: 5px 10px;
+      text-decoration: none;
+      border-radius: 3px;
+      margin-right: 5px;
+    }
+    .btn-torles {
+      background: #d4b8b8;
+      color: white;
+      padding: 5px 10px;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>📋 Edzések</h1>
+  <a href="/edzesek/uj" class="btn-uj">+ Új edzés</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Program neve</th>
+      <th>Edző neve</th>
+      <th>Műveletek</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${edzesek}">
+      <td th:text="${e.edzesId}">1</td>
+      <td th:text="${e.edzesprogramNeve}">Aerobik</td>
+      <td th:text="${e.edzoNeve}">Kovács Anna</td>
+      <td>
+        <a th:href="@{/edzesek/szerkesztes/{id}(id=${e.edzesId})}" class="btn-modositas">✏️ Módosítás</a>
+        <a th:href="@{/edzesek/torles/{id}(id=${e.edzesId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">🗑️ Törlés</a>
+      </td>
+    </tr>
+    <tr th:if="${edzesek.isEmpty()}">
+      <td colspan="4" style="text-align:center; padding:20px;">Még nincs edzés</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

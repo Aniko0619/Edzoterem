@@ -1,7 +1,6 @@
 package com.nye.edzoterem.nyeuni.service;
 
 import java.util.List;
-import java.util.Optional;
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesRequestDto;
 import com.nye.edzoterem.nyeuni.dto.edzes.EdzesResponseDto;
 import com.nye.edzoterem.nyeuni.entity.Edzes;
@@ -20,14 +19,14 @@ public class EdzesService {
 
     public EdzesResponseDto createEdzes(EdzesRequestDto edzesRequestDto) {
         Edzes edzes = Edzes.builder()
-                .name(edzesRequestDto.getName())
-                .edzoName(edzesRequestDto.getEdzoName())
+                .edzesprogramNeve(edzesRequestDto.getEdzesprogramNeve())
+                .edzoNeve(edzesRequestDto.getEdzoNeve())
                 .build();
         Edzes savedEdzes = edzesRepository.save(edzes);
         return mapToDto(savedEdzes);
     }
 
-    public List<EdzesResponseDto> getAllEdzesek() {        // Javítva: metódusnév konzisztens a controllerrel
+    public List<EdzesResponseDto> getAllEdzesek() {
         return edzesRepository.findAll()
                 .stream()
                 .map(this::mapToDto)
@@ -44,23 +43,25 @@ public class EdzesService {
         Edzes edzes = edzesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
 
-        edzes.setName(requestDto.getName());
-        edzes.setEdzoName(requestDto.getEdzoName());
+        edzes.setEdzesprogramNeve(requestDto.getEdzesprogramNeve());
+        edzes.setEdzoNeve(requestDto.getEdzoNeve());
 
         Edzes updatedEdzes = edzesRepository.save(edzes);
         return mapToDto(updatedEdzes);
     }
 
     public void deleteEdzes(Long id) {
+        if (!edzesRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Edzes not found by id: " + id);
+        }
         edzesRepository.deleteById(id);
     }
 
     private EdzesResponseDto mapToDto(Edzes edzes) {
         return EdzesResponseDto.builder()
-                .id(edzes.getId())
-                .name(edzes.getName())
-                .edzoName(edzes.getEdzoName())
+                .edzesId(edzes.getEdzesId())
+                .edzesprogramNeve(edzes.getEdzesprogramNeve())
+                .edzoNeve(edzes.getEdzoNeve())
                 .build();
     }
 }
-

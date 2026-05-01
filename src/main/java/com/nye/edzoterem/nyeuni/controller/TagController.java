@@ -42,8 +42,5 @@ public class TagController {
         tagService.deleteTag(id);
     }
 
-    @GetMapping("/edzes/{edzesId}")
-    public List<TagResponseDto> getTagokByEdzesId(@PathVariable Long edzesId) {
-        return tagService.getTagokByEdzesId(edzesId);
-    }
+
 }

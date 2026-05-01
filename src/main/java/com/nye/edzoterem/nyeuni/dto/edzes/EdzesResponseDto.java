@@ -6,9 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class EdzesResponseDto {
-
-    private Long id;
-    private String name;
-    private String edzoName;
-
+    private Long edzesId;              // volt: id
+    private String edzesprogramNeve;   // volt: name
+    private String edzoNeve;           // volt: edzoName
 }

@@ -7,23 +7,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Entity
-@Table(name = "tagok")
+@Table(name = "tag")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Tag{
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long tagId;           // volt: id
 
     @Column(nullable = false)
-    private String name;
-    private Integer age;
-
+    private String tagNeve;       // volt: name
+    private Integer kor;          // volt: age (átnevezheted vagy maradhat age)
 
     @ManyToOne
     @JoinColumn(name = "edzes_id")
-    private Edzes edzes;
+    private Edzes edzes;          // marad
 }
-

@@ -1,0 +1,17 @@
+package com.nye.edzoterem.nyeuni.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@Controller
+public class TesztController {
+
+
+    // http://localhost:8080/teszt
+    @GetMapping("/teszt")
+    @ResponseBody
+    public String teszt() {
+        return "Működik!";
+    }
+}
