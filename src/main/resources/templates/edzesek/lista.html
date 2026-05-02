@@ -30,6 +30,16 @@
       display: inline-block;
       margin-bottom: 20px;
     }
+    .btn-tagok {
+      background: #9bb8b0;
+      color: white;
+      padding: 8px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin-bottom: 20px;
+      margin-left: 10px;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
@@ -58,12 +68,28 @@
       text-decoration: none;
       border-radius: 3px;
     }
+    .tagok-listaja {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #666;
+    }
+    .tag-cimke {
+      background: #e8e0d5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      margin-right: 5px;
+      display: inline-block;
+      font-size: 0.85em;
+    }
   </style>
 </head>
 <body>
 <div class="container">
   <h1>📋 Edzések</h1>
-  <a href="/edzesek/uj" class="btn-uj">+ Új edzés</a>
+  <div>
+    <a href="/edzesek/uj" class="btn-uj">+ Új edzés</a>
+    <a href="/tagok" class="btn-tagok">👥 Tagok kezelése</a>  <!-- ÚJ GOMB! -->
+  </div>
 
   <table>
     <thead>
@@ -71,6 +97,7 @@
       <th>ID</th>
       <th>Program neve</th>
       <th>Edző neve</th>
+      <th>Tagok</th>
       <th>Műveletek</th>
     </tr>
     </thead>
@@ -80,12 +107,18 @@
       <td th:text="${e.edzesprogramNeve}">Aerobik</td>
       <td th:text="${e.edzoNeve}">Kovács Anna</td>
       <td>
+        <span th:if="${e.tagok != null and !e.tagok.isEmpty()}">
+          <span th:each="tag : ${e.tagok}" class="tag-cimke" th:text="${tag.tagNeve} + ' (' + ${tag.kor} + ')'"></span>
+        </span>
+        <span th:if="${e.tagok == null or e.tagok.isEmpty()}" style="color:#999;">- nincs tag -</span>
+      </td>
+      <td>
         <a th:href="@{/edzesek/szerkesztes/{id}(id=${e.edzesId})}" class="btn-modositas">✏️ Módosítás</a>
         <a th:href="@{/edzesek/torles/{id}(id=${e.edzesId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">🗑️ Törlés</a>
       </td>
     </tr>
     <tr th:if="${edzesek.isEmpty()}">
-      <td colspan="4" style="text-align:center; padding:20px;">Még nincs edzés</td>
+      <td colspan="5" style="text-align:center; padding:20px;">Még nincs edzés</td>
     </tr>
     </tbody>
   </table>

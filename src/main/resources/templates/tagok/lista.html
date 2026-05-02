@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tagok</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f0e8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        h1 {
+            color: #7b6e5d;
+            margin-bottom: 20px;
+        }
+        .btn-uj {
+            background: #c4b5a0;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .btn-vissza {
+            background: #b8a99a;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 20px;
+            margin-left: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #d4c5b0;
+            padding: 10px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .btn-modositas {
+            background: #b5c4b1;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        .btn-torles {
+            background: #d4b8b8;
+            color: white;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>👥 Tagok</h1>
+    <a href="/tagok/uj" class="btn-uj">+ Új tag</a>
+    <a href="/edzesek" class="btn-vissza">↩️ Vissza az edzésekhez</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tag neve</th>
+            <th>Kor</th>
+            <th>Edzés</th>
+            <th>Műveletek</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${tagok}">
+            <td th:text="${t.tagId}">1</td>
+            <td th:text="${t.tagNeve}">Nagy Béla</td>
+            <td th:text="${t.kor}">25</td>
+            <td th:text="${t.edzesprogramNeve}">Aerobik</td>
+            <td>
+                <a th:href="@{/tagok/szerkesztes/{id}(id=${t.tagId})}" class="btn-modositas">✏️ Módosítás</a>
+                <a th:href="@{/tagok/torles/{id}(id=${t.tagId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">🗑️ Törlés</a>
+            </td>
+        </tr>
+        <tr th:if="${tagok.isEmpty()}">
+            <td colspan="5" style="text-align:center; padding:20px;">Még nincs tag</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

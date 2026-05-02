@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Új tag</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f0e8;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      color: #7b6e5d;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #6b5e4e;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    button {
+      background: #c4b5a0;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .vissza {
+      background: #b8a99a;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>✨ Új tag hozzáadása</h1>
+
+  <form action="/tagok/uj" method="post">
+    <div class="form-group">
+      <label>Tag neve:</label>
+      <input type="text" name="tagNeve" required>
+    </div>
+    <div class="form-group">
+      <label>Kor:</label>
+      <input type="number" name="kor">
+    </div>
+    <div class="form-group">
+      <label>Edzés (válaszd ki):</label>
+      <select name="edzesId">
+        <option value="">-- Nincs edzés --</option>
+        <option th:each="edzes : ${edzesek}" th:value="${edzes.edzesId}" th:text="${edzes.edzesprogramNeve} + ' (' + ${edzes.edzoNeve} + ')'"></option>
+      </select>
+    </div>
+    <button type="submit">💾 Mentés</button>
+    <a href="/tagok" class="vissza">↩️ Vissza</a>
+  </form>
+</div>
+</body>
+</html>

@@ -62,6 +62,7 @@ public class EdzesService {
                 .edzesId(edzes.getEdzesId())
                 .edzesprogramNeve(edzes.getEdzesprogramNeve())
                 .edzoNeve(edzes.getEdzoNeve())
+                .tagok(edzes.getTagok())
                 .build();
     }
 }
