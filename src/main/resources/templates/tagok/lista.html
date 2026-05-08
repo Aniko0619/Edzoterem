@@ -72,9 +72,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>👥 Tagok</h1>
+    <h1>Tagok</h1>
     <a href="/tagok/uj" class="btn-uj">+ Új tag</a>
-    <a href="/edzesek" class="btn-vissza">↩️ Vissza az edzésekhez</a>
+    <a href="/edzesek" class="btn-vissza">Vissza az edzésekhez</a>
 
     <table>
         <thead>
@@ -93,8 +93,8 @@
             <td th:text="${t.kor}">25</td>
             <td th:text="${t.edzesprogramNeve}">Aerobik</td>
             <td>
-                <a th:href="@{/tagok/szerkesztes/{id}(id=${t.tagId})}" class="btn-modositas">✏️ Módosítás</a>
-                <a th:href="@{/tagok/torles/{id}(id=${t.tagId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">🗑️ Törlés</a>
+                <a th:href="@{/tagok/szerkesztes/{id}(id=${t.tagId})}" class="btn-modositas"> Módosítás</a>
+                <a th:href="@{/tagok/torles/{id}(id=${t.tagId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')"> Törlés</a>
             </td>
         </tr>
         <tr th:if="${tagok.isEmpty()}">

@@ -85,10 +85,10 @@
 </head>
 <body>
 <div class="container">
-  <h1>📋 Edzések</h1>
+  <h1> Edzések</h1>
   <div>
     <a href="/edzesek/uj" class="btn-uj">+ Új edzés</a>
-    <a href="/tagok" class="btn-tagok">👥 Tagok kezelése</a>  <!-- ÚJ GOMB! -->
+    <a href="/tagok" class="btn-tagok">Tagok kezelése</a>  <!-- ÚJ GOMB! -->
   </div>
 
   <table>
@@ -113,8 +113,8 @@
         <span th:if="${e.tagok == null or e.tagok.isEmpty()}" style="color:#999;">- nincs tag -</span>
       </td>
       <td>
-        <a th:href="@{/edzesek/szerkesztes/{id}(id=${e.edzesId})}" class="btn-modositas">✏️ Módosítás</a>
-        <a th:href="@{/edzesek/torles/{id}(id=${e.edzesId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">🗑️ Törlés</a>
+        <a th:href="@{/edzesek/szerkesztes/{id}(id=${e.edzesId})}" class="btn-modositas"> Módosítás</a>
+        <a th:href="@{/edzesek/torles/{id}(id=${e.edzesId})}" class="btn-torles" onclick="return confirm('Biztosan törlöd?')">Törlés</a>
       </td>
     </tr>
     <tr th:if="${edzesek.isEmpty()}">

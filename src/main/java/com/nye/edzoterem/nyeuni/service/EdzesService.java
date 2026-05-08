@@ -18,15 +18,20 @@ public class EdzesService {
     }
 
     public EdzesResponseDto createEdzes(EdzesRequestDto edzesRequestDto) {
+
+
         Edzes edzes = Edzes.builder()
                 .edzesprogramNeve(edzesRequestDto.getEdzesprogramNeve())
                 .edzoNeve(edzesRequestDto.getEdzoNeve())
                 .build();
+
         Edzes savedEdzes = edzesRepository.save(edzes);
+
         return mapToDto(savedEdzes);
     }
 
     public List<EdzesResponseDto> getAllEdzesek() {
+
         return edzesRepository.findAll()
                 .stream()
                 .map(this::mapToDto)
@@ -34,16 +39,21 @@ public class EdzesService {
     }
 
     public EdzesResponseDto getEdzesById(Long id) {
+
         Edzes edzes = edzesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
+
         return mapToDto(edzes);
     }
 
     public EdzesResponseDto updateEdzes(Long id, EdzesRequestDto requestDto) {
+
         Edzes edzes = edzesRepository.findById(id)
+
                 .orElseThrow(() -> new ResourceNotFoundException("Edzes not found by id: " + id));
 
         edzes.setEdzesprogramNeve(requestDto.getEdzesprogramNeve());
+
         edzes.setEdzoNeve(requestDto.getEdzoNeve());
 
         Edzes updatedEdzes = edzesRepository.save(edzes);

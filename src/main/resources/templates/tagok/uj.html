@@ -55,7 +55,7 @@
 </head>
 <body>
 <div class="container">
-  <h1>✨ Új tag hozzáadása</h1>
+  <h1> Új tag hozzáadása</h1>
 
   <form action="/tagok/uj" method="post">
     <div class="form-group">
@@ -73,8 +73,8 @@
         <option th:each="edzes : ${edzesek}" th:value="${edzes.edzesId}" th:text="${edzes.edzesprogramNeve} + ' (' + ${edzes.edzoNeve} + ')'"></option>
       </select>
     </div>
-    <button type="submit">💾 Mentés</button>
-    <a href="/tagok" class="vissza">↩️ Vissza</a>
+    <button type="submit"> Mentés</button>
+    <a href="/tagok" class="vissza"> Vissza</a>
   </form>
 </div>
 </body>

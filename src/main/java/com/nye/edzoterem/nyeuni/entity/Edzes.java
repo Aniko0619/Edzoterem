@@ -8,21 +8,23 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.ArrayList;
 
-@Entity
-@Table(name = "edzes")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Entity                                   // Ez egy adatbázis tábla
+@Table(name = "edzes")                    // A tábla neve
+@Data                                     // Lombok: getter, setter, toString, equals,
+                                          //         hashCode
+@NoArgsConstructor                        // Lombok: üres konstruktor (JPA kell)
+@AllArgsConstructor                       // Lombok: összes paraméteres konstruktor
+@Builder                                  //   Lombok: builder minta
+                                          //          (pl. Edzes.builder().name("Aerobik").build())
 public class Edzes {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long edzesId;           // volt: id
+    @Id                                   //  Ez az elsődleges kulcs (primary key)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-növekvő szám az adatbázisban
+    private Long edzesId;                 // volt: id
 
-    @Column(nullable = false)
-    private String edzesprogramNeve;  // volt: name
+    @Column(nullable = false)             // Ez az oszlop nem lehet NULL az adatbázisban
+    private String edzesprogramNeve;      // volt: name
 
-    private String edzoNeve;          // volt: edzoName
+    private String edzoNeve;              // volt: edzoName
 
     @OneToMany(mappedBy = "edzes")
     private List<Tag> tagok = new ArrayList();  // volt: tagok (maradhat)

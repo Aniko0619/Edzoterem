@@ -55,7 +55,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>✏️ Edzés módosítása</h1>
+    <h1>Edzés módosítása</h1>
 
     <form th:action="@{/edzesek/szerkesztes/{id}(id=${id})}" method="post">
         <div class="form-group">
@@ -66,8 +66,8 @@
             <label>Edző neve:</label>
             <input type="text" name="edzoNeve" th:value="${edzes.edzoNeve}">
         </div>
-        <button type="submit">💾 Mentés</button>
-        <a href="/edzesek" class="vissza">↩️ Vissza</a>
+        <button type="submit"> Mentés</button>
+        <a href="/edzesek" class="vissza"> Vissza</a>
     </form>
 </div>
 </body>
